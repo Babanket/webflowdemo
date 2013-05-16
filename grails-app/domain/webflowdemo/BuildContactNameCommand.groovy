@@ -7,7 +7,7 @@ class BuildContactNameCommand implements Serializable {
 	String lastName
 	
 	static constraints = {
-		fitstName(blank:false, nullable:false, maxSize:50)
+		firstName(blank:false, nullable:false, maxSize:50)
 		lastName(blank:false, nullable:false, maxSize:50)
 	}
 }
