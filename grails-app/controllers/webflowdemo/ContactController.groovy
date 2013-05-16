@@ -7,7 +7,7 @@ class ContactController {
 	def buildFlow = {
 		enter {
 			action{
-				Contact flow.contract = new Contact()
+				flow.contact = new Contact()
 				[contact: flow.contact]
 			}
 			on("success").to("name")
@@ -15,7 +15,7 @@ class ContactController {
 		}
 		name {
 			on('next'){ BuildContactNameCommand command ->
-				if(command.hasError()){
+				if(command.hasErrors()){
 					flash.message = "Validation error"
 					flow.command = command
 					return error()
@@ -39,7 +39,7 @@ class ContactController {
 			on('cancel').to('finish')
 		}
 		electronic{
-			on('name') { BuildContactElectronicCommand command ->
+			on('next') { BuildContactElectronicCommand command ->
 				if(command.hasErrors()){
 					flash.message = "Validation error"
 					flow.command = command
@@ -53,6 +53,7 @@ class ContactController {
 		}
 		complete{
 			on('next'){
+                println flow.contact
 				if(!flow.contact.save()){
 					flash.message = "Couldn't save the contact"
 					return error()
